@@ -1,9 +1,16 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>Añadir Factura</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-select (ionChange)="clienteElegido($event)" placeholder="Selecciona un cliente" interface="action-sheet">
+    <ion-select-option *ngFor="let cliente of clientes">{{cliente.cliente}}</ion-select-option>
+  </ion-select>
 </ion-content>
