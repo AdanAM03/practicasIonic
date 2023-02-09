@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-content *ngIf="todo">
+    <ion-item *ngIf="!activForm">
+      <ion-list>
+        <span *ngFor="let partido of partidos">
+          <ion-item (click)="edicionMarcador($event)">
+            <label>
+              <p>{{partido.equipoLocal}} - {{partido.ptosLocal}} </p>
+              <p>{{partido.equipoVisitante}} - {{partido.ptosVisitante}}</p>
+            </label>
+          </ion-item>
+        </span>
+      </ion-list>
+    </ion-item>
+    <ion-item>
+      <ion-checkbox [(ngModel)]="activForm" (ionChange)="desactiva()"></ion-checkbox>
+      <label> - Añadir partido</label>
+    </ion-item>
+
+    <form [formGroup]="form" *ngIf="activForm" (ngSubmit)="onSubmit(form.value)">
+      <ion-item>
+        <ion-label position="floating">Equipo Local: </ion-label>
+        <ion-input type="text" [(ngModel)]="camp2" formControlName="equipoLocalInput"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Equipo Visitante: </ion-label>
+        <ion-input type="text" [(ngModel)]="camp1" formControlName="equipoVisitanteInput"></ion-input>
+      </ion-item>
+      <ion-item [disabled]="!form.valid">
+        <ion-button type="submit" expand="block">SUBMIT DATA</ion-button>
+      </ion-item>
+    </form>
+  </ion-content>
+
+  <ion-content *ngIf="marcador">
+    <form [formGroup]="marcadorF" (ngSubmit)="onSubmitMarcador(marcadorF.value)">
+      <ion-item>
+        <ion-label position="floating">Marcador Local: </ion-label>
+        <ion-input type="number" [(ngModel)]="marc2" formControlName="marcadorLocal" [disabled]="!botones1"></ion-input>
+        <ion-button (click)="botones1B()">Editar</ion-button>
+        <ion-item *ngIf="!botones1">
+          <ion-button (click)="suma1L()">1</ion-button>
+          <ion-button (click)="suma2L()">2</ion-button>
+          <ion-button (click)="suma3L()">3</ion-button>
+        </ion-item>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Marcador Visitante: </ion-label>
+        <ion-input type="number" [(ngModel)]="marc1" formControlName="marcadorVisitante" [disabled]="!botones2">
+        </ion-input>
+        <ion-button (click)="botones2B()">Editar</ion-button>
+        <ion-item *ngIf="!botones2">
+          <ion-button (click)="suma1V()">1</ion-button>
+          <ion-button (click)="suma2V()">2</ion-button>
+          <ion-button (click)="suma3V()">3</ion-button>
+        </ion-item>
+      </ion-item>
+      <ion-item>
+        <ion-button type=" submit" expand="block">SUBMIT DATA</ion-button>
+      </ion-item>
+    </form>
+  </ion-content>
+</ion-content>
