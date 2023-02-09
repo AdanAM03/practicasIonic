@@ -1,0 +1,7 @@
+{
+  "name": "pratica8",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
