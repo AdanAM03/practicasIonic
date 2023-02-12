@@ -10,7 +10,36 @@
 </ion-header>
 
 <ion-content>
-  <ion-select (ionChange)="clienteElegido($event)" placeholder="Selecciona un cliente" interface="action-sheet">
-    <ion-select-option *ngFor="let cliente of clientes">{{cliente.cliente}}</ion-select-option>
-  </ion-select>
+  <form [formGroup]="validations_form" (ngSubmit)="onSubmit(validations_form.value)">
+
+    <ion-select (ionChange)="clienteElegido($event)" formControlName="cliente" placeholder="Selecciona un cliente"
+      interface="action-sheet">
+      <ion-select-option *ngFor="let cliente of clientes">{{cliente.cliente}}</ion-select-option>
+    </ion-select>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Porcentaje Iva:
+      </ion-label>
+      <ion-input type="number" formControlName="iva" [(ngModel)]="iva" min="0" (ionChange)="recalcula()"></ion-input>
+    </ion-item>
+
+    <ion-button (click)="addProducto()">Añadir Productos</ion-button>
+    <ion-list *ngIf="lin.length > 0">
+      <ion-list-header>Productos Elegidos</ion-list-header>
+      <span *ngFor="let l of lin">
+        <ion-item>{{l.descripcion}} - {{l.importeUnitario}}</ion-item>
+      </span>
+    </ion-list>
+
+    <ion-item *ngIf="totalSinIva != null">
+      <ion-label>Precio sin Iva {{totalSinIva}}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Precio con Iva {{factura.total}}</ion-label>
+    </ion-item>
+
+    <ion-button color="primary" class="submit-btn" type="submit"
+      [disabled]="!validations_form.valid || lin.length < 1">Añadir</ion-button>
+  </form>
 </ion-content>

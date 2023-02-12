@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Factura } from '../modelo/Factura';
 import { Cliente } from '../modelo/Cliente';
 import { Producto } from '../modelo/Producto';
+import { FacturaNueva } from '../modelo/FacturaNueva';
 
 @Injectable()
 export class ApiServiceProvider {
@@ -79,6 +80,25 @@ export class ApiServiceProvider {
                         reject(error.message);
                     })
                 });
+        return promise;
+    }
+
+    async addFactura(factura: FacturaNueva) {
+        let promise = new Promise<Factura>((resolve, reject) => {
+            var header = { "headers": { "Content-Type": "application/json" } };
+            let datos = JSON.stringify(factura);
+            this.http.post("http://localhost:3000/facturas/" + datos,
+                header).toPromise().then(
+                    (data: any) => { // Success
+                        let f: Factura;
+                        f = data;
+                        resolve(f);
+                    }
+                )
+                .catch((error: Error) => {
+                    reject(error.message);
+                });
+        });
         return promise;
     }
 

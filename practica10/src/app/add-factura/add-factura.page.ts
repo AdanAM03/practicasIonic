@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { AddProdcutoPage } from '../add-prodcuto/add-prodcuto.page';
 import { ApiServiceProvider } from '../api/ApiService';
 import { Cliente } from '../modelo/Cliente';
+import { Factura } from '../modelo/Factura';
+import { FacturaNueva } from '../modelo/FacturaNueva';
+import { LineaDetalle } from '../modelo/LineaDetalle';
+import { Producto } from '../modelo/Producto';
 
 @Component({
   selector: 'app-add-factura',
@@ -10,9 +16,24 @@ import { Cliente } from '../modelo/Cliente';
 })
 export class AddFacturaPage implements OnInit {
   clientes: Cliente[] = [];
-  clienteSeleccionado?: Cliente;
+  clienteSeleccionado: Cliente;
+  factura: FacturaNueva = new FacturaNueva();
+  lin: LineaDetalle[] = [];
+  iva: number;
+  totalSinIva: number;
+  validations_form: FormGroup;
+  
 
-  constructor(public navCtrl: NavController, public servicio: ApiServiceProvider) { }
+  constructor(public formBuilder: FormBuilder, public navCtrl: NavController, public servicio: ApiServiceProvider, public alertController: AlertController, public modalController: ModalController) { 
+    this.validations_form = this.formBuilder.group({
+      cliente: new FormControl(null, Validators.compose([
+        Validators.required
+      ])),
+      iva: new FormControl(null, Validators.compose([
+        Validators.required
+      ]))
+    });
+  }
 
   async ngOnInit() {
     this.clientes = await this.servicio.getClientes();
@@ -28,6 +49,39 @@ export class AddFacturaPage implements OnInit {
         this.clienteSeleccionado = cl;
     });
     console.log(this.clienteSeleccionado);
+  }
+
+  async addProducto() {
+    const modal = await this.modalController.create({
+      component: AddProdcutoPage
+    });
+
+    modal.onDidDismiss().then((data) => {
+      let lienaProducto:LineaDetalle=data['data'];
+      if (lienaProducto != null) {
+        this.lin.push(lienaProducto);
+        this.totalSinIva = lienaProducto.importeUnitario * lienaProducto.unidades;
+        this.recalcula();
+      }
+    });
+
+    return await modal.present();
+
+  }
+
+  recalcula() {
+    if (this.lin.length > 0) {
+      this.factura.total = this.totalSinIva + (this.totalSinIva * (this.iva / 100));
+    }
+  } 
+  
+  onSubmit(values: any) {
+    this.factura.cliente = this.clienteSeleccionado.cliente;
+    this.factura.porcentajeIva = this.iva;
+    this.factura.productos = this.lin;
+    
+    this.servicio.addFactura(this.factura);
+    this.navCtrl.navigateBack("home")
   }
 
 }

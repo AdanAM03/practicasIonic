@@ -14,7 +14,11 @@ const routes: Routes = [
   {
     path: 'add-factura',
     loadChildren: () => import('./add-factura/add-factura.module').then( m => m.AddFacturaPageModule)
+  },  {
+    path: 'add-prodcuto',
+    loadChildren: () => import('./add-prodcuto/add-prodcuto.module').then( m => m.AddProdcutoPageModule)
   },
+
 ];
 
 @NgModule({
