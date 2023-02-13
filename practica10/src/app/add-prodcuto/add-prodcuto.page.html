@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button (click)="closeModal()"><ion-icon name="close-circle-outline"></ion-icon></ion-button>
+    <ion-title>Añadir Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="validations_form" (ngSubmit)="onSubmit(validations_form.value)">
+
+    <ion-item>
+      <ion-select formControlName="prod" placeholder="Selecicona un producto" interface="action-sheet">
+        <span *ngFor="let producto of productos">
+          <ion-select-option>{{producto.descripcion}}</ion-select-option>
+        </span>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Cantidad: </ion-label>
+      <ion-input type="number" formControlName="cant"></ion-input>
+    </ion-item>
+
+    <ion-button color="primary" class="submit-btn" type="submit"
+      [disabled]="!validations_form.valid">Añadir</ion-button>
+
+  </form>
+</ion-content>
