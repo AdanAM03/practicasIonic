@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { ApiServiceProvider } from '../api/ApiService';
-import { Factura } from '../modelo/Factura';
+import { FacturaNueva } from '../modelo/FacturaNueva';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +10,7 @@ import { Factura } from '../modelo/Factura';
 })
 export class HomePage {
 
-  facturas: Factura[] = [];
+  facturas: FacturaNueva[] = [];
   
   constructor(public servicio: ApiServiceProvider, public navCtrl: NavController) { }
   

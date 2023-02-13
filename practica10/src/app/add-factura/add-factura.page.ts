@@ -4,10 +4,8 @@ import { AlertController, ModalController, NavController } from '@ionic/angular'
 import { AddProdcutoPage } from '../add-prodcuto/add-prodcuto.page';
 import { ApiServiceProvider } from '../api/ApiService';
 import { Cliente } from '../modelo/Cliente';
-import { Factura } from '../modelo/Factura';
 import { FacturaNueva } from '../modelo/FacturaNueva';
 import { LineaDetalle } from '../modelo/LineaDetalle';
-import { Producto } from '../modelo/Producto';
 
 @Component({
   selector: 'app-add-factura',

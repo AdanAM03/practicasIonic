@@ -18,11 +18,9 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
+  <div>
     <ion-list>
-      <span *ngFor="let factura of facturas">
-        <ion-item>{{factura.id}} - {{factura.cliente}} - {{factura.total}} €</ion-item>
-      </span>
+      <ion-item *ngFor="let factura of facturas">{{factura.id}} - {{factura.cliente}} - {{factura.total}} €</ion-item>
     </ion-list>
   </div>
 </ion-content>
