@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { AddFacturaPage } from '../add-factura/add-factura.page';
 import { ApiServiceProvider } from '../api/ApiService';
-import { FacturaNueva } from '../modelo/FacturaNueva';
+import { Factura } from '../modelo/Factura';
+import { FacturaMostrar } from '../modelo/FacturaMostrar';
 
 @Component({
   selector: 'app-home',
@@ -10,25 +12,41 @@ import { FacturaNueva } from '../modelo/FacturaNueva';
 })
 export class HomePage {
 
-  facturas: FacturaNueva[] = [];
+  facturas: FacturaMostrar[] = [];
   
-  constructor(public servicio: ApiServiceProvider, public navCtrl: NavController) { }
+  constructor(public servicio: ApiServiceProvider, public alertController: AlertController, public modalController: ModalController) { }
   
   async ngOnInit(): Promise<void> { 
-    this.facturas = await this.servicio.getFacturas();
-
-    this.facturas.forEach(factura => {
+    let f: Factura[] = await this.servicio.getFacturas(); 
+    
+    f.forEach(factura => {
       let precio: number = 0;
       factura.productos.forEach(producto => {
         precio += producto.importeUnitario * producto.unidades;
       });
-      precio *= (factura.porcentajeIva / 100);
-      factura.total = precio
+      precio *= (1 + factura.porcentajeIva / 100);
+      this.facturas.push(new FacturaMostrar(factura.id, factura.cliente, factura.porcentajeIva, Number.parseFloat(precio.toFixed(2))));
     });
   }
 
-  nuevaFactura() {
-    this.navCtrl.navigateForward("add-factura");
+  async nuevaFactura() {
+    const modal = await this.modalController.create({
+      component: AddFacturaPage
+    });
+
+    modal.onDidDismiss().then((data) => {
+      let factura:Factura=data['data'];
+      if (factura != null) {
+        let precio: number = 0;
+        factura.productos.forEach(producto => {
+          precio += producto.importeUnitario * producto.unidades;
+        });
+        this.facturas.push(new FacturaMostrar(this.facturas[this.facturas.length-1].id+1, factura.cliente, factura.porcentajeIva, Number.parseFloat(precio.toFixed(2))));
+      }
+    });
+
+    return await modal.present();
+
   }
 
 }
