@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon slot="icon-only" name="arrow-undo-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Usuarios Con Préstamos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <span *ngFor="let usuario of usuarios; let i = index">
+      <ion-item (click)="verUsuario(i)">
+        {{usuario.id}} - {{usuario.apellidos}}, {{usuario.nombre}}
+      </ion-item>
+    </span>
+  </ion-list>
+</ion-content>

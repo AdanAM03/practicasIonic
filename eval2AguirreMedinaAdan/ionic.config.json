@@ -1,0 +1,7 @@
+{
+  "name": "eval2AguirreMedinaAdan",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

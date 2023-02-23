@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon slot="icon-only" name="arrow-undo-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="nuevoPrestamo()">
+        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>Usuario: {{usuario.id}} - {{usuario.apellidos}}, {{usuario.nombre}}</ion-item>
+  <ion-list>
+    <ion-list-header>Libros</ion-list-header>
+    <span *ngFor="let libro of libros; let i = index">
+      <ion-item>
+        {{libro.id}} - {{libro.titulo}} - {{libro.fechaPrestamo}}
+        <ion-button (click)="devolverLibro(i)">Devolver</ion-button>
+      </ion-item>
+    </span>
+  </ion-list>
+
+</ion-content>
