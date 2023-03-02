@@ -4,7 +4,8 @@ import { AlertController, ModalController, NavController } from '@ionic/angular'
 import { AddProdcutoPage } from '../add-prodcuto/add-prodcuto.page';
 import { ApiServiceProvider } from '../api/ApiService';
 import { Cliente } from '../modelo/Cliente';
-import { FacturaNueva } from '../modelo/FacturaNueva';
+import { Factura } from '../modelo/Factura';
+import { FacturaMostrar } from '../modelo/FacturaMostrar';
 import { LineaDetalle } from '../modelo/LineaDetalle';
 
 @Component({
@@ -15,14 +16,14 @@ import { LineaDetalle } from '../modelo/LineaDetalle';
 export class AddFacturaPage implements OnInit {
   clientes: Cliente[] = [];
   clienteSeleccionado: Cliente;
-  factura: FacturaNueva = new FacturaNueva();
+  total: number;
   lin: LineaDetalle[] = [];
   iva: number;
   totalSinIva: number;
   validations_form: FormGroup;
   
 
-  constructor(public formBuilder: FormBuilder, public navCtrl: NavController, public servicio: ApiServiceProvider, public alertController: AlertController, public modalController: ModalController) { 
+  constructor(public formBuilder: FormBuilder, public servicio: ApiServiceProvider, public alertController: AlertController, public modalController: ModalController) { 
     this.validations_form = this.formBuilder.group({
       cliente: new FormControl(null, Validators.compose([
         Validators.required
@@ -38,7 +39,7 @@ export class AddFacturaPage implements OnInit {
   }
 
   volver() {
-    this.navCtrl.navigateBack("home");
+    this.modalController.dismiss(null);
   }
 
   clienteElegido(event: any) {
@@ -69,17 +70,19 @@ export class AddFacturaPage implements OnInit {
 
   recalcula() {
     if (this.lin.length > 0) {
-      this.factura.total = this.totalSinIva + (this.totalSinIva * (this.iva / 100));
+      this.total = this.totalSinIva + (this.totalSinIva * (this.iva / 100));
     }
   } 
   
   onSubmit(values: any) {
-    this.factura.cliente = this.clienteSeleccionado.cliente;
-    this.factura.porcentajeIva = this.iva;
-    this.factura.productos = this.lin;
+    let f: Factura = new Factura();
+    f.id = null;
+    f.cliente = this.clienteSeleccionado.cliente;
+    f.porcentajeIva = this.iva;
+    f.productos = this.lin;
     
-    this.servicio.addFactura(this.factura);
-    this.navCtrl.navigateBack("home")
+    this.servicio.addFactura(f);
+    this.modalController.dismiss(f);
   }
 
 }

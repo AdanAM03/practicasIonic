@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FacturaNueva } from '../modelo/FacturaNueva';
+import { Factura } from '../modelo/Factura';
 import { Cliente } from '../modelo/Cliente';
 import { Producto } from '../modelo/Producto';
 
@@ -27,7 +27,7 @@ export class ApiServiceProvider {
         let promise = new Promise<any>((resolve, reject) => {
             this.http.get("http://localhost:3000/facturas").toPromise()
                 .then((data: any) => {
-                    data = data.map((f: FacturaNueva) => { return f });
+                    data = data.map((f: Factura) => { return f });
                     resolve(data);
                 })
                 .catch((error: Error) => {
@@ -70,7 +70,7 @@ export class ApiServiceProvider {
         let promise = new Promise<any>((resolve, reject) => {
             this.http.get('http://localhost:3000/facturas?cliente=' + cliente).toPromise()
                 .then((data: any) => {
-                    data = data.map((f: FacturaNueva) => { return f });
+                    data = data.map((f: Factura) => { return f });
                     resolve(data);
                     })
                 .catch((error: Error) => {
@@ -94,14 +94,14 @@ export class ApiServiceProvider {
         return promise;
     }
 
-    async addFactura(factura: FacturaNueva) {
-        let promise = new Promise<any>((resolve, reject) => {
+    async addFactura(factura: Factura): Promise<Factura> {
+        let promise = new Promise<Factura>((resolve, reject) => {
             var header = { "headers": { "Content-Type": "application/json" } };
             let datos = JSON.stringify(factura);
-            this.http.post("http://localhost:3000/facturas/" + datos,
+            this.http.post("http://localhost:3000/facturas/", datos,
                 header).toPromise().then(
                     (data: any) => { // Success
-                        let f: FacturaNueva;
+                        let f: Factura;
                         f = data;
                         resolve(f);
                     }

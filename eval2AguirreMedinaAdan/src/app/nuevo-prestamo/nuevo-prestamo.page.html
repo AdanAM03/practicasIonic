@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="volver()">
+        <ion-icon slot="icon-only" name="arrow-undo-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>nuevoPrestamo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-radio-group [(ngModel)]="opcion">
+    <ion-label>Tipo de búsqueda</ion-label>
+    <ion-item>
+      <ion-label>Id</ion-label>
+      <ion-radio slot="end" value="id"></ion-radio>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>titulo</ion-label>
+      <ion-radio slot="end" value="titulo"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+  <ion-item>
+    <ion-input placeholder="Título o id del libro" type="text" [(ngModel)]="parametro"></ion-input>
+  </ion-item>
+  <ion-button [disabled]="parametro==null || opcion==null" (click)="buscar()">Buscar</ion-button>
+
+  <ion-list *ngIf="libros != null">
+    <ion-list-header>Libros</ion-list-header>
+    <span *ngFor="let libro of libros; let i = index">
+      <ion-item (click)="prestamo(i)">
+        {{libro.id}} - {{libro.titulo}}
+      </ion-item>
+    </span>
+  </ion-list>
+</ion-content>

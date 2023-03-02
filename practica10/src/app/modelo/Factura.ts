@@ -1,11 +1,10 @@
 import { LineaDetalle } from "./LineaDetalle";
 
-export class FacturaNueva {
+export class Factura {
     public id: number;
     public cliente: String;
     public porcentajeIva: number;
     public productos: LineaDetalle[];
-    public total: number;
     constructor() {
         
     }
