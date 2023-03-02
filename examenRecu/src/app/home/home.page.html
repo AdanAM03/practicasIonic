@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div>
+    <ion-radio-group value="lista" (ionChange)="elegido($event)">
+      <ion-item>
+        <ion-label>Lista:</ion-label>
+        <ion-radio value="lista" check="true"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Formulario:</ion-label>
+        <ion-radio value="formulario"></ion-radio>
+      </ion-item>
+
+    </ion-radio-group>
+  </div>
+
+  <div *ngIf="eleccion=='lista'">
+    <ion-list>
+      <span *ngFor="let atleta of atletas; let indice=index">
+        <ion-item (click)="atletaElegido(indice)">
+          <div>
+            <ion-col size="12">{{atleta.dni}} ({{atleta.apellidos}}, {{atleta.nombre}})</ion-col>
+          </div>
+          <div>
+            <ion-col size="12">
+              {{atleta.edad}} años
+              <div *ngIf="atleta.federado">Equipo: {{atleta.equipo}}</div>
+              <div *ngIf="!atleta.federado && atleta.edad < 18">Telefono tutor: {{atleta.telefonoTutor}}</div>
+            </ion-col>
+          </div>
+        </ion-item>
+      </span>
+    </ion-list>
+  </div>
+
+  <div *ngIf="eleccion=='formulario'">
+    <form [formGroup]="validations_form" (ngSubmit)="onSubmit(validations_form.value)">
+      <ion-item>
+        <ion-label position="floating" color="primary">DNI</ion-label>
+        <ion-input type="text" formControlName="dni"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating" color="primary">Apellidos</ion-label>
+        <ion-input type="text" formControlName="apellidos"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating" color="primary">Nombre</ion-label>
+        <ion-input type="text" formControlName="nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating" color="primary">Edad</ion-label>
+        <ion-input type="number" formControlName="edad"></ion-input>
+      </ion-item>
+
+      <ion-button color="primary" class="submit-btn" expand="block" type="submit" [disabled]="!validations_form.valid">
+        ACEPTAR</ion-button>
+    </form>
+  </div>
+</ion-content>

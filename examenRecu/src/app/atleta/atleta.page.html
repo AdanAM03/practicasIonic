@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button slot="icon-only" (click)="volver()"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>{{atleta.apellidos}}, {{atleta.nombre}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>Carrera - Distancia KM - Horas-mintos-segundos</ion-list-header>
+    <span *ngFor="let marca of atleta.marcas; let i = index">
+      <ion-item>
+        {{marca.carrera}} - {{marca.distancia}}Km - {{tiempoMarcas[i]}}
+      </ion-item>
+    </span>
+  </ion-list>
+</ion-content>

@@ -31,4 +31,9 @@ export class HomePage {
     this.navCtrl.navigateForward("add-factura");
   }
 
+  async elimina(indice: number) {
+    if (await this.servicio.deleteFactura(this.facturas[indice].id))
+      this.facturas.splice(indice, 1);
+  }
+
 }

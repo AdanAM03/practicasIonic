@@ -10,6 +10,18 @@ export class ApiServiceProvider {
     constructor(public http: HttpClient) {
     }
 
+    async deleteFactura(id):Promise<boolean> {
+        return this.http.delete("http://localhost:3000/facturas/" + id).toPromise()
+            .then((data: any) => {
+                console.log(data + " " + id);
+                return true;
+            })
+            .catch((error: Error) => {
+                console.log("Error borrado " + id);
+                return false;
+            });
+    }
+
 
     async getFacturas() {
         let promise = new Promise<any>((resolve, reject) => {

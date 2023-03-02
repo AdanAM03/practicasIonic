@@ -1,0 +1,7 @@
+{
+  "name": "examenRecu",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
